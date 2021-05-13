@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-const NOMINATIM: string = "https://nominatim.openstreetmap.org/search?";
-const NOMINATIM_REVERSE: string = "https://nominatim.openstreetmap.org/reverse?";
+import { NominatimEndpoint } from './nominatim.endpoint';
+import { Location } from './location';
+
+const FORMAT: string = 'json';
 
 @Injectable()
 export class GeocodingService {
 
     constructor(private http: HttpClient) {}
 
-    getCityByCoordinates(latitude: number, longitude: number): string {
-        return "";
+    getLocationByCoordinates(latitude: number, longitude: number): Observable<Location> {
+        let url = NominatimEndpoint.REVERSE_SEARCH + 'format=' + FORMAT + '&' + 'lat=' + latitude + '&' + 'lon=' + longitude;
+        return this.http.get<Location>(url);
     }
 }
