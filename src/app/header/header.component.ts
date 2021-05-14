@@ -7,8 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
+  }
+
+  displayWeatherToday() {
+    let weatherBox = document.getElementById('weatherBox');
+    weatherBox!.innerHTML = 'Weather today is good.';
+  }
+
+  displayWeatherThisWeek() {
+    let weatherBox = document.getElementById('weatherBox');
+    weatherBox!.innerHTML = 'Weather this week is good.';
+  }
+
+  displayWeatherNextWeek() {
+    let weatherBox = document.getElementById('weatherBox');
+    weatherBox!.innerHTML = 'Weather next week is good.';
   }
 }
