@@ -19,7 +19,7 @@ export class MainComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(position => {
         let latitude = position.coords.latitude;
         let longitude = position.coords.longitude;
-        this.geocodingService.getLocationByCoordinates(latitude, longitude).subscribe(data => {
+        this.geocodingService.getLocationByCoordinates(latitude, longitude).toPromise().then(data => {
           // Get attribute 'address' as an own JSON object
           let jsonAddressObject = JSON.parse(JSON.stringify(data['address']));
           console.log(jsonAddressObject);
