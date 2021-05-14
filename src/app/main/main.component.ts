@@ -22,7 +22,6 @@ export class MainComponent implements OnInit {
         this.geocodingService.getLocationByCoordinates(latitude, longitude).toPromise().then(data => {
           // Get attribute 'address' as an own JSON object
           let jsonAddressObject = JSON.parse(JSON.stringify(data['address']));
-          console.log(jsonAddressObject);
           let city = jsonAddressObject['city'];
           let state = jsonAddressObject['state'];
           let country = jsonAddressObject['country'];
