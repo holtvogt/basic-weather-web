@@ -23,9 +23,7 @@ export class MainComponent implements OnInit {
           // Get attribute 'address' as an own JSON object
           let jsonAddressObject = JSON.parse(JSON.stringify(data['address']));
           let city = jsonAddressObject['city'];
-          let state = jsonAddressObject['state'];
-          let country = jsonAddressObject['country'];
-          this.location = city + ', ' + state + ', ' + country;
+          this.location = city;
         });
       });
       // User denied access
