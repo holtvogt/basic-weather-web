@@ -1,17 +1,16 @@
-<section class="hero is-fullheight-with-navbar">
-  <div class="hero-body">
-    <div class="container has-text-centered">
-      <p class="title">
-        Your current location is
-      </p>
-      <p class="sub-title">
-        <strong>{{location}}</strong>
-      </p>
-    </div>
+<section class="hero">
+  <div id="content-location" class="content">
+    <h2>Weather in {{location}}</h2>
   </div>
-  <div class="content">
-    <div id="weatherBox" class="box">
-      
-    </div>
+  <div id="content-today" class="content">
+    <app-card></app-card>
+  </div>
+  <div id="content-rest" class="content">
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
   </div>
 </section>

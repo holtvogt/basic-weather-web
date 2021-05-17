@@ -1,32 +1,23 @@
 .hero {
     display: grid;
-    grid-template-rows: 1fr 3fr;
-    grid-template-columns: 100%;
-    justify-content: center;
+    grid-template-rows: 0.5fr 1fr 2fr;
+    grid-template-columns: 1fr;
+    justify-items: center;
     background-color: #e6f2ff;
 }
 
-.hero-body {
-    display: flex;
-    justify-content: flex-start;
-    width: auto;
+#content-location {
+    margin-top: 50px;
 }
 
-.content {
-    width: 100%;
-    height: 100%;
+#content-today {
+    width: 50%;
+    height: fit-content;
 }
 
-.box {
-    margin: auto;
-    width: 40%;
-    height: 80%;
-    color: #000;
-    background-color: #fff;
-    border: none;
-    border-radius: 15px;
-}
-
-.box:hover {
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+#content-rest {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 50%;
 }
