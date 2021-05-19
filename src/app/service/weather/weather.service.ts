@@ -12,51 +12,99 @@ export class WeatherService {
     private forecastThisWeekURL: string;
     private forecastNextWeekURL: string;
 
-    weatherForecast: Weather[];
-
     constructor(private http: HttpClient) {
         this.forecastTodayURL = OpenWeatherMapEndpoint.TODAY;
         this.forecastThisWeekURL = OpenWeatherMapEndpoint.THIS_WEEK;
         this.forecastNextWeekURL = OpenWeatherMapEndpoint.NEXT_WEEK;
-        this.weatherForecast = new Array(3);
     }
 
-    private getWeekday(): string {
-        return new Date().toLocaleDateString("default", { weekday: "long" });
-    }
-
-    private getDate() {
+    private getWeekday(days: number): string {
         let date = new Date();
+        date.setDate(date.getDate() + days);
+        return date.toLocaleDateString("en-GB", { weekday: "long" });
+    }
+
+    private getDate(days: number) {
+        let date = new Date();
+        date.setDate(date.getDate() + days);
         return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
     }
 
-    getForecastTodayByCoordinates(latitude: number, longitude: number) {
-        let url = this.forecastTodayURL + '&lat=' + latitude + '&lon=' + longitude;
-        this.http.get<Days>(url).toPromise().then(data => {
-            // JSON formatting
-            let jsonTodayObject = JSON.parse(JSON.stringify(data['list']))[0];
-            let jsonTemperatureObject = jsonTodayObject['temp'];
-            let jsonWeatherObject = jsonTodayObject['weather']; 
-            
-            let forecastToday: Weather = {
-                maxTemperature: jsonTemperatureObject['max'],
-                minTemperature: jsonTemperatureObject['min'],
-                weather: jsonWeatherObject[0]['main'],
-                weekday: this.getWeekday(),
-                date: this.getDate()
-            }
+    private getWeather(days: Days, day: number): Weather {
+        // JSON formatting
+        let jsonForecastObject = JSON.parse(JSON.stringify(days.list))[day];
+        let jsonTemperatureObject = jsonForecastObject['temp'];
+        let jsonWeatherObject = jsonForecastObject['weather']; 
 
-            this.weatherForecast[0] = forecastToday;
+        // Decimals are not necessary for degree values
+        let max = Math.floor(jsonTemperatureObject['max']);
+        let min = Math.floor(jsonTemperatureObject['min']);
+
+        let forecast: Weather = {
+            maxTemperature: max,
+            minTemperature: min,
+            weather: jsonWeatherObject[0]['main'],
+            weekday: this.getWeekday(day),
+            date: this.getDate(day)
+        }
+
+        return forecast;
+    }
+
+    async getForecastTodayByCoordinates(latitude: number, longitude: number): Promise<any> {
+        let url = this.forecastTodayURL + '&lat=' + latitude + '&lon=' + longitude;
+        return this.http.get<Days>(url).toPromise().then(days => {
+            return this.getWeather(days, 0);
         });
     }
 
-    getForecastThisWeekByCoordinates(latitude: number, longitude: number) {
+    async getForecastThisWeekByCoordinates(latitude: number, longitude: number): Promise<any[]> {
         let url = this.forecastThisWeekURL + '&lat=' + latitude + '&lon=' + longitude;
-        this.http.get(url).toPromise().then(data => console.log(data));
+        return this.http.get<Days>(url).toPromise().then(days => {
+            let today = this.getWeather(days, 0);
+            let todayPlusOne = this.getWeather(days, 1);
+            let todayPlusTwo = this.getWeather(days, 2);
+            let todayPlusThree = this.getWeather(days, 3);
+            let todayPlusFour = this.getWeather(days, 4);
+            let todayPlusFive = this.getWeather(days, 5);
+            let todayPlusSix = this.getWeather(days, 6);
+
+            let thisWeeksForecast = [
+                today,
+                todayPlusOne,
+                todayPlusTwo,
+                todayPlusThree,
+                todayPlusFour,
+                todayPlusFive,
+                todayPlusSix
+            ];
+
+            return thisWeeksForecast;
+        });
     }
 
-    getForecastNextWeekByCoordinates(latitude: number, longitude: number) {
+    async getForecastNextWeekByCoordinates(latitude: number, longitude: number): Promise<any[]> {
         let url = this.forecastNextWeekURL + '&lat=' + latitude + '&lon=' + longitude;
-        this.http.get(url).toPromise().then(data => console.log(data));
+        return this.http.get<Days>(url).toPromise().then(days => {
+            let todayPlusSeven = this.getWeather(days, 7);
+            let todayPlusEight = this.getWeather(days, 8);
+            let todayPlusNine = this.getWeather(days, 9);
+            let todayPlusTen = this.getWeather(days, 10);
+            let todayPlusEleven = this.getWeather(days, 11);
+            let todayPlusTwelve = this.getWeather(days, 12);
+            let todayPlusThirteen = this.getWeather(days, 13);
+
+            let nextWeeksForecast = [
+                todayPlusSeven,
+                todayPlusEight,
+                todayPlusNine,
+                todayPlusTen,
+                todayPlusEleven,
+                todayPlusTwelve,
+                todayPlusThirteen
+            ];
+
+            return nextWeeksForecast;
+        });
     }
 }
