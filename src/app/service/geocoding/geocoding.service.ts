@@ -9,17 +9,14 @@ const FORMAT: string = 'json';
 @Injectable()
 export class GeocodingService {
 
-    private location!: string;
-
     constructor(private http: HttpClient) {}
 
-    getLocationByCoordinates(latitude: number, longitude: number): string {
+    async getLocationByCoordinates(latitude: number, longitude: number): Promise<any> {
         let url = NominatimEndpoint.REVERSE_SEARCH + 'format=' + FORMAT + '&' + 'lat=' + latitude + '&' + 'lon=' + longitude;
-        this.http.get<Location>(url).toPromise().then(data => {
+        return this.http.get<Location>(url).toPromise().then(location => {
             // Get attribute 'address' as an own JSON object
-            let jsonAddressObject = JSON.parse(JSON.stringify(data['address']));
-            this.location = jsonAddressObject['city'];
+            let jsonAddressObject = JSON.parse(JSON.stringify(location['address']));
+            return jsonAddressObject['city'];
         });
-        return this.location;
     }
 }
