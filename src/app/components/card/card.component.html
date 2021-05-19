@@ -1,12 +1,12 @@
 <div class="card">
     <div class="card-content">
       <div id="weather" class="content">
-        <h1>20° | 12°</h1>
-        <p>Rainy<p>
+        <h1>{{weather.maxTemperature}}° | {{weather.minTemperature}}°</h1>
+        <p>{{weather.weather}}<p>
       </div>
       <div id="date" class="content is-small">
-        <h1>Monday</h1>
-        <p>17/05/2021<p>
+        <h1>{{weather.weekday}}</h1>
+        <p>{{weather.date}}<p>
       </div>
     </div>
 </div>
