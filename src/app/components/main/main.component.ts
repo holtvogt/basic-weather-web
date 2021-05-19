@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { GeocodingService } from '../service/geocoding/geocoding.service';
-import { WeatherService } from '../service/weather/weather.service';
+import { GeocodingService } from '../../service/geocoding/geocoding.service';
+import { WeatherService } from '../../service/weather/weather.service';
 
 @Component({
   selector: 'app-main',

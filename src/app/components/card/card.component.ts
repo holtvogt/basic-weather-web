@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from 'src/app/service/weather/weather.service';
 
 @Component({
   selector: 'app-card',
@@ -8,9 +7,8 @@ import { WeatherService } from 'src/app/service/weather/weather.service';
 })
 export class CardComponent implements OnInit {
 
-  constructor(private weatherService: WeatherService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
-
 }
