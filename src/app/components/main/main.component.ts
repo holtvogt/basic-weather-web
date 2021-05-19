@@ -1,7 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ComponentRef,
+  ComponentFactoryResolver,
+  ViewContainerRef,
+  ViewChild
+} from '@angular/core';
 
+import { Forecast } from 'src/app/forecast/forecast';
+import { Weekday } from 'src/app/forecast/weekday';
+
+import { CardComponent } from '../card/card.component';
 import { GeocodingService } from '../../service/geocoding/geocoding.service';
-import { WeatherService } from '../../service/weather/weather.service';
 
 @Component({
   selector: 'app-main',
@@ -10,12 +20,21 @@ import { WeatherService } from '../../service/weather/weather.service';
 })
 export class MainComponent implements OnInit {
 
+  @ViewChild("first", { read: ViewContainerRef })
+  viewContainerReferenceFirst!: ViewContainerRef;
+  @ViewChild("rest", { read: ViewContainerRef })
+  viewContainerReferenceRest!: ViewContainerRef;
+
+  weatherCards!: Array<ComponentRef<CardComponent>>;
   location!: string;
 
-  constructor(private geocodingService: GeocodingService, private weatherService: WeatherService) {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private geocodingService: GeocodingService) {}
 
   ngOnInit(): void {
     this.showUserLocation();
+  }
+
+  ngAfterViewInit() {
     this.showWeatherToday();
   }
 
@@ -32,7 +51,7 @@ export class MainComponent implements OnInit {
   private setLocation(position: GeolocationPosition) {
     let latitude = position.coords.latitude;
     let longitude = position.coords.longitude;
-    this.location = this.geocodingService.getLocationByCoordinates(latitude, longitude);
+    this.geocodingService.getLocationByCoordinates(latitude, longitude).then(location => this.location = location);
   }
 
   private showError(error: GeolocationPositionError) {
@@ -54,6 +73,14 @@ export class MainComponent implements OnInit {
   }
 
   showWeatherToday() {
-    this.weatherService.getForecastTodayByCoordinates(49, 8.6);
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory<CardComponent>(CardComponent);
+    let weatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(componentFactory);
+    // Instantiate weather card component
+    let weatherCard = weatherCardReference.instance;
+
+    weatherCard.forecast = Forecast.TODAY;
+    weatherCard.weekday = Weekday.FIRST;
+
+    this.weatherCards.push(weatherCardReference);
   }
 }
