@@ -4,16 +4,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
 import { MainComponent } from './components/main/main.component';
 import { CardComponent } from './components/card/card.component';
+
 import { GeocodingService } from './service/geocoding/geocoding.service';
 import { WeatherService } from './service/weather/weather.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     MainComponent,
     CardComponent
   ],
@@ -28,5 +27,4 @@ import { WeatherService } from './service/weather/weather.service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
-}
+export class AppModule {}
