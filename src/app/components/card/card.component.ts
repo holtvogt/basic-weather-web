@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Weather } from 'src/app/forecast/weather';
 
-import { WeatherService } from 'src/app/service/weather/weather.service';
+import { Weather } from 'src/app/forecast/weather';
 import { Forecast } from '../../forecast/forecast';
 import { Weekday } from '../../forecast/weekday';
+import { WeatherService } from 'src/app/service/weather/weather.service';
 
 @Component({
   selector: 'app-card',
