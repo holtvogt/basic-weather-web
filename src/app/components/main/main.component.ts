@@ -13,6 +13,7 @@ import { Forecast } from 'src/app/forecast/forecast';
 import { Weekday } from 'src/app/forecast/weekday';
 import { CardComponent } from '../card/card.component';
 import { GeocodingService } from '../../service/geocoding/geocoding.service';
+import { ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-main',
@@ -21,13 +22,18 @@ import { GeocodingService } from '../../service/geocoding/geocoding.service';
 })
 export class MainComponent implements OnInit, AfterViewInit {
 
-  @ViewChild("first", { read: ViewContainerRef, static: true })
+  @ViewChild('first', { read: ViewContainerRef, static: true })
   private viewContainerReferenceFirst!: ViewContainerRef;
-  @ViewChild("rest", { read: ViewContainerRef, static: true })
+  @ViewChild('rest', { read: ViewContainerRef, static: true })
   private viewContainerReferenceRest!: ViewContainerRef;
 
   private componentFactory: ComponentFactory<CardComponent>;
   private weatherCards: Array<ComponentRef<CardComponent>>;
+
+  @ViewChild('navBurger')
+  navBurger!: ElementRef;
+  @ViewChild('navMenu')
+  navMenu!: ElementRef;
 
   location!: string;
 
@@ -244,5 +250,10 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.weatherCards.push(fifthWeatherCardReference);
     this.weatherCards.push(sixthWeatherCardReference);
     this.weatherCards.push(seventhWeatherCardReference);
+  }
+
+  toggleNavbar() {
+    this.navBurger.nativeElement.classList.toggle('is-active');
+    this.navMenu.nativeElement.classList.toggle('is-active');
   }
 }
