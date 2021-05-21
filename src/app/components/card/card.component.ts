@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Weather } from 'src/app/forecast/weather';
 
 import { WeatherService } from 'src/app/service/weather/weather.service';
@@ -12,9 +12,7 @@ import { Weekday } from '../../forecast/weekday';
 })
 export class CardComponent implements OnInit {
 
-  @Input()
   forecast!: Forecast;
-  @Input()
   weekday!: Weekday;
   weather!: Weather;
 
@@ -66,25 +64,25 @@ export class CardComponent implements OnInit {
       case Forecast.NEXT_WEEK:
         switch (this.weekday) {
           case Weekday.FIRST:
-            this.weatherService.getForecastThisWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[7]);
+            this.weatherService.getForecastNextWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[0]);
             break;
           case Weekday.SECOND:
-            this.weatherService.getForecastThisWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[8]);
+            this.weatherService.getForecastNextWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[1]);
             break;
           case Weekday.THIRD:
-            this.weatherService.getForecastThisWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[9]);
+            this.weatherService.getForecastNextWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[2]);
             break;
           case Weekday.FOURTH:
-            this.weatherService.getForecastThisWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[10]);
+            this.weatherService.getForecastNextWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[3]);
             break;
           case Weekday.FIFTH:
-            this.weatherService.getForecastThisWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[11]);
+            this.weatherService.getForecastNextWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[4]);
             break;
           case Weekday.SIXTH:
-            this.weatherService.getForecastThisWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[12]);
+            this.weatherService.getForecastNextWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[5]);
             break;
           case Weekday.SEVENTH:
-            this.weatherService.getForecastThisWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[13]);
+            this.weatherService.getForecastNextWeekByCoordinates(49.006889, 8.403653).then(weather => this.weather = weather[6]);
             break; 
           default:
             break;
