@@ -26,10 +26,12 @@ export class MainComponent implements OnInit, AfterViewInit {
   @ViewChild("rest", { read: ViewContainerRef, static: true })
   viewContainerReferenceRest!: ViewContainerRef;
 
-  weatherCards!: Array<ComponentRef<CardComponent>>;
   location!: string;
+  weatherCards: Array<ComponentRef<CardComponent>>;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver, private geocodingService: GeocodingService) {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private geocodingService: GeocodingService) {
+    this.weatherCards = [];
+  }
 
   private showUserLocation() {
     // Get current position
