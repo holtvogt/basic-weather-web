@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { MainComponent } from '../main/main.component';
 
 @Component({
   selector: 'app-header',
@@ -8,22 +9,12 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   constructor() {}
+  
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
+  displayWeatherToday() {}
 
-  displayWeatherToday() {
-    let weatherBox = document.getElementById('weatherBox');
-    weatherBox!.innerHTML = 'Weather today is good.';
-  }
+  displayWeatherThisWeek() {}
 
-  displayWeatherThisWeek() {
-    let weatherBox = document.getElementById('weatherBox');
-    weatherBox!.innerHTML = 'Weather this week is good.';
-  }
-
-  displayWeatherNextWeek() {
-    let weatherBox = document.getElementById('weatherBox');
-    weatherBox!.innerHTML = 'Weather next week is good.';
-  }
+  displayWeatherNextWeek() {}
 }
