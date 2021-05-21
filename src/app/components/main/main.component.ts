@@ -5,12 +5,12 @@ import {
   ComponentFactoryResolver,
   ViewContainerRef,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  ComponentFactory
 } from '@angular/core';
 
 import { Forecast } from 'src/app/forecast/forecast';
 import { Weekday } from 'src/app/forecast/weekday';
-
 import { CardComponent } from '../card/card.component';
 import { GeocodingService } from '../../service/geocoding/geocoding.service';
 
@@ -22,14 +22,17 @@ import { GeocodingService } from '../../service/geocoding/geocoding.service';
 export class MainComponent implements OnInit, AfterViewInit {
 
   @ViewChild("first", { read: ViewContainerRef, static: true })
-  viewContainerReferenceFirst!: ViewContainerRef;
+  private viewContainerReferenceFirst!: ViewContainerRef;
   @ViewChild("rest", { read: ViewContainerRef, static: true })
-  viewContainerReferenceRest!: ViewContainerRef;
+  private viewContainerReferenceRest!: ViewContainerRef;
+
+  private componentFactory: ComponentFactory<CardComponent>;
+  private weatherCards: Array<ComponentRef<CardComponent>>;
 
   location!: string;
-  weatherCards: Array<ComponentRef<CardComponent>>;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver, private geocodingService: GeocodingService) {
+    this.componentFactory = this.componentFactoryResolver.resolveComponentFactory<CardComponent>(CardComponent);
     this.weatherCards = [];
   }
 
@@ -75,13 +78,13 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.showUserLocation();
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.showWeatherToday();
+  }
 
   showWeatherToday() {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory<CardComponent>(CardComponent);
-
     // Main card
-    let weatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(componentFactory);
+    let weatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(this.componentFactory);
 
     // Remove other weather cards
     this.removeCards();
@@ -97,17 +100,15 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   showWeatherThisWeek() {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory<CardComponent>(CardComponent);
-
     // Main card
-    let firstWeatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(componentFactory); 
+    let firstWeatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(this.componentFactory); 
     // Remaining cards
-    let secondWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let thirdWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let fourthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let fifthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let sixthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let seventhWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
+    let secondWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let thirdWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let fourthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let fifthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let sixthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let seventhWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
 
     // Remove other weather cards
     this.removeCards();
@@ -147,17 +148,15 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   showWeatherNextWeek() {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory<CardComponent>(CardComponent);
-
     // Main card
-    let firstWeatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(componentFactory); 
+    let firstWeatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(this.componentFactory); 
     // Remaining cards
-    let secondWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let thirdWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let fourthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let fifthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let sixthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
-    let seventhWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(componentFactory);
+    let secondWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let thirdWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let fourthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let fifthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let sixthWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
+    let seventhWeatherCardReference = this.viewContainerReferenceRest.createComponent<CardComponent>(this.componentFactory);
 
     // Remove other weather cards
     this.removeCards();
