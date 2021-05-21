@@ -74,6 +74,51 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.weatherCards.forEach(component => component.destroy()); 
   }
 
+  private updateButtonStyle(forecast: Forecast) {
+    let buttonToday = <HTMLButtonElement> document.getElementById('buttonToday');
+    let buttonThisWeek = <HTMLButtonElement> document.getElementById('buttonThisWeek');
+    let buttonNextWeek = <HTMLButtonElement> document.getElementById('buttonNextWeek');
+
+    switch (forecast) {
+      case Forecast.TODAY:
+        this.setClickedButtonStyle(buttonToday);
+        this.setDefaultButtonStyle(buttonThisWeek);
+        this.setDefaultButtonStyle(buttonNextWeek);
+        break;
+
+      case Forecast.THIS_WEEK:
+        this.setClickedButtonStyle(buttonThisWeek);
+        this.setDefaultButtonStyle(buttonToday);
+        this.setDefaultButtonStyle(buttonNextWeek);
+        break;
+
+      case Forecast.NEXT_WEEK:
+        this.setClickedButtonStyle(buttonNextWeek);
+        this.setDefaultButtonStyle(buttonToday);
+        this.setDefaultButtonStyle(buttonThisWeek);
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  private setDefaultButtonStyle(button: HTMLButtonElement) {
+    button.style.cssText = 'default';
+    button.style.color = '#000';
+    button.style.backgroundColor = '#fff';
+    button.style.boxShadow = '0px 8px 15px rgba(0, 0, 0, 0.1)';
+    button.style.transform = 'translateY(0px)';
+  }
+
+  private setClickedButtonStyle(button: HTMLButtonElement) {
+    button.style.cssText = 'clicked';
+    button.style.color = '#fff';
+    button.style.backgroundColor = '#4376e6';
+    button.style.boxShadow = '0px 15px 20px rgba(31, 120, 143, 0.52)';
+    button.style.transform = 'translateY(-3px)';
+  }
+
   ngOnInit(): void {
     this.showUserLocation();
   }
@@ -83,6 +128,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   showWeatherToday() {
+    this.updateButtonStyle(Forecast.TODAY);
+
     // Main card
     let weatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(this.componentFactory);
 
@@ -100,6 +147,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   showWeatherThisWeek() {
+    this.updateButtonStyle(Forecast.THIS_WEEK);
+
     // Main card
     let firstWeatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(this.componentFactory); 
     // Remaining cards
@@ -148,6 +197,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   showWeatherNextWeek() {
+    this.updateButtonStyle(Forecast.NEXT_WEEK);
+
     // Main card
     let firstWeatherCardReference = this.viewContainerReferenceFirst.createComponent<CardComponent>(this.componentFactory); 
     // Remaining cards
