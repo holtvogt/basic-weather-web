@@ -14,8 +14,7 @@ export class GeocodingService {
     async getLocationByCoordinates(latitude: number, longitude: number): Promise<any> {
         let url = NominatimEndpoint.REVERSE_SEARCH + 'format=' + FORMAT + '&' + 'lat=' + latitude + '&' + 'lon=' + longitude;
         return this.http.get<Location>(url).toPromise().then(location => {
-            // Get attribute 'address' as an own JSON object
-            let jsonAddressObject = JSON.parse(JSON.stringify(location['address']));
+            let jsonAddressObject = JSON.parse(JSON.stringify(location.address));
             return jsonAddressObject['city'];
         });
     }
