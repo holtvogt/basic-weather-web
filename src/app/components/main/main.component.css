@@ -4,6 +4,12 @@
     background-color: #e6f2ff;
 }
 
+.navbar-menu {
+    min-width: 382px;
+    background-color: #e6f2ff;
+    box-shadow: none;
+}
+
 .button {
     border: none;
     color: #000;
