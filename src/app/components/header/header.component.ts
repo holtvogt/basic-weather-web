@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -17,9 +18,25 @@ export class HeaderComponent implements OnInit {
   @ViewChild('navMenu')
   navMenu!: ElementRef;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  navigateHome() {
+    this.router.navigateByUrl('home');
+  }
+
+  navigateToday() {
+    this.router.navigateByUrl('today');
+  }
+
+  navigateThisWeek() {
+    this.router.navigateByUrl('thisWeek');
+  }
+
+  navigateNextWeek() {
+    this.router.navigateByUrl('nextWeek');
   }
 
   toggleNavbar() {
