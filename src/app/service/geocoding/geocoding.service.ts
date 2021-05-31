@@ -15,7 +15,7 @@ export class GeocodingService {
         let url = NominatimEndpoint.REVERSE_SEARCH + 'format=' + FORMAT + '&' + 'lat=' + latitude + '&' + 'lon=' + longitude;
         return this.http.get<Location>(url).toPromise().then(location => {
             let jsonAddressObject = JSON.parse(JSON.stringify(location.address));
-            return jsonAddressObject['city'];
+            return jsonAddressObject['city'] + ", " + jsonAddressObject['country'];
         });
     }
 }
