@@ -1,0 +1,16 @@
+.hero {
+    display: grid;
+    grid-template-rows: 0.5fr 1fr;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    background-color: #3e8ed0;
+}
+
+#buffer {
+    margin-top: 50px;
+}
+
+#day {
+    margin: auto;
+    width: 50%;
+}
