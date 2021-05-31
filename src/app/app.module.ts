@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { CardComponent } from './components/card/card.component';
+import { HeaderComponent } from './components/header/header.component';
 
 import { GeocodingService } from './service/geocoding/geocoding.service';
 import { WeatherService } from './service/weather/weather.service';
@@ -14,7 +15,8 @@ import { WeatherService } from './service/weather/weather.service';
   declarations: [
     AppComponent,
     MainComponent,
-    CardComponent
+    CardComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

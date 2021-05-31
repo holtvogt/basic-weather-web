@@ -30,11 +30,6 @@ export class MainComponent implements OnInit, AfterViewInit {
   private componentFactory: ComponentFactory<CardComponent>;
   private weatherCards: Array<ComponentRef<CardComponent>>;
 
-  @ViewChild('navBurger')
-  navBurger!: ElementRef;
-  @ViewChild('navMenu')
-  navMenu!: ElementRef;
-
   location!: string;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver, private geocodingService: GeocodingService) {
@@ -250,10 +245,5 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.weatherCards.push(fifthWeatherCardReference);
     this.weatherCards.push(sixthWeatherCardReference);
     this.weatherCards.push(seventhWeatherCardReference);
-  }
-
-  toggleNavbar() {
-    this.navBurger.nativeElement.classList.toggle('is-active');
-    this.navMenu.nativeElement.classList.toggle('is-active');
   }
 }
