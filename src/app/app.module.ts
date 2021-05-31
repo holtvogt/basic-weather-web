@@ -10,13 +10,19 @@ import { HeaderComponent } from './components/header/header.component';
 
 import { GeocodingService } from './service/geocoding/geocoding.service';
 import { WeatherService } from './service/weather/weather.service';
+import { TodayComponent } from './components/today/today.component';
+import { ThisWeekComponent } from './components/this-week/this-week.component';
+import { NextWeekComponent } from './components/next-week/next-week.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     CardComponent,
-    HeaderComponent
+    HeaderComponent,
+    TodayComponent,
+    ThisWeekComponent,
+    NextWeekComponent
   ],
   imports: [
     BrowserModule,
