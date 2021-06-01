@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit {
     let locationHeadline = document.getElementById('location');
     switch(error.code) {
       case error.PERMISSION_DENIED:
-        locationHeadline!.innerHTML = "<strong><em>User denied request for Geolocation.</em></strong>"
+        locationHeadline!.innerHTML = "<strong><em>Geolocation request denied.</em></strong>"
         break;
       case error.POSITION_UNAVAILABLE:
         locationHeadline!.innerHTML = "<strong><em>Location information is unavailable.</em></strong>"
