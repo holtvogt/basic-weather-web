@@ -1,7 +1,4 @@
-<h1 align="center">
-  <p>Basic Weather</p>
-  <img src="./src/assets/images/home.png" width="128" height="128">
-</h1>
+# Basic Weather
 
 This weather web application is based on [Nominatim](https://nominatim.org/release-docs/develop/api/Overview/)'s geocoding API and [OpenWeatherMap](https://openweathermap.org/api)'s weather API. The project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.11.
 
