@@ -1,9 +1,39 @@
+/**
+ * The weekdays.
+ */
 export enum Weekday {
-    FIRST,
-    SECOND,
-    THIRD,
-    FOURTH,
-    FIFTH,
-    SIXTH,
-    SEVENTH
+	/**
+	 * Represents Monday.
+	 */
+	FIRST,
+
+	/**
+	 * Represents Tuesday.
+	 */
+	SECOND,
+
+	/**
+	 * Represents Wednesday.
+	 */
+	THIRD,
+
+	/**
+	 * Represents Thursday.
+	 */
+	FOURTH,
+
+	/**
+	 * Represents Friday.
+	 */
+	FIFTH,
+
+	/**
+	 * Represents Saturday.
+	 */
+	SIXTH,
+
+	/**
+	 * Represents Sunday.
+	 */
+	SEVENTH,
 }

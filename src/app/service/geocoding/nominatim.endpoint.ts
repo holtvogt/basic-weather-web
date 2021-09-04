@@ -1,4 +1,14 @@
+/**
+ * Represents the Nomination API endpoints for search and reverse search.
+ */
 export const NominatimEndpoint = {
-    SEARCH: 'https://nominatim.openstreetmap.org/search?',
-    REVERSE_SEARCH: 'https://nominatim.openstreetmap.org/reverse?'
+	/**
+	 * The common search by city name, address, etc.
+	 */
+	SEARCH: "https://nominatim.openstreetmap.org/search?",
+
+	/**
+	 * The reverse search by geolocation.
+	 */
+	REVERSE_SEARCH: "https://nominatim.openstreetmap.org/reverse?",
 };
