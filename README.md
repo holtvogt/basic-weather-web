@@ -1,15 +1,3 @@
 # Basic Weather
 
-This weather web application is based on [Nominatim](https://nominatim.org/release-docs/develop/api/Overview/)'s geocoding API and [OpenWeatherMap](https://openweathermap.org/api)'s weather API. The project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.11.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+This website was created for the [Mobile Computing and Internet of Things](https://pcs.tm.kit.edu/962_984.php) course at Karlsruhe Institute of Technology. The weather web application is based on [Nominatim](https://nominatim.org/release-docs/develop/api/Overview/)'s geocoding API and [OpenWeatherMap](https://openweathermap.org/api)'s weather API to display common weather information.
