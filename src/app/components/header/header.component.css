@@ -1,7 +1,7 @@
 .navbar {
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-menu {
-    min-width: 382px;
+	min-width: 382px;
 }

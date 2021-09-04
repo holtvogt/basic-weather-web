@@ -1,38 +1,41 @@
 <nav class="navbar" role="navigation">
-    <div class="container">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="localhost:4200">
-          <strong>Basic Weather</strong>
-        </a>
-        <a role="button" id="burger" #navBurger class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menu" (click)="toggleNavbar()">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-  
-      <div id="menu" #navMenu class="navbar-menu">
-        <div class="navbar-start">
-          <div class="navbar-item">
-            <span class="icon-text">
-              <span class="icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </span>
-              <span id="location" >{{location}}</span>
-            </span>
-          </div>
-        </div>
-        <div class="navbar-end">
-          <a class="navbar-item" (click)="navigateToday()">
-            Today
-          </a>
-          <a class="navbar-item" (click)="navigateThisWeek()">
-            This Week
-          </a>
-          <a class="navbar-item" (click)="navigateNextWeek()">
-            Next Week
-          </a>
-        </div>
-      </div>
-    </div>
-  </nav>
+	<div class="container">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="localhost:4200">
+				<strong>Basic Weather</strong>
+			</a>
+			<a
+				role="button"
+				id="burger"
+				#navBurger
+				class="navbar-burger"
+				aria-label="menu"
+				aria-expanded="false"
+				data-target="menu"
+				(click)="toggleNavbar()"
+			>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+
+		<div id="menu" #navMenu class="navbar-menu">
+			<div class="navbar-start">
+				<div class="navbar-item">
+					<span class="icon-text">
+						<span class="icon">
+							<i class="fas fa-map-marker-alt"></i>
+						</span>
+						<span id="location">{{ location }}</span>
+					</span>
+				</div>
+			</div>
+			<div class="navbar-end">
+				<a class="navbar-item" (click)="navigateToday()"> Today </a>
+				<a class="navbar-item" (click)="navigateThisWeek()"> This Week </a>
+				<a class="navbar-item" (click)="navigateNextWeek()"> Next Week </a>
+			</div>
+		</div>
+	</div>
+</nav>
