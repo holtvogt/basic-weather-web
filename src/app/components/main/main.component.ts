@@ -4,7 +4,7 @@ import { Component, OnInit } from "@angular/core";
     selector: "app-main",
     templateUrl: "./main.component.html",
     styleUrls: ["./main.component.css"],
-    standalone: false
+    standalone: true
 })
 export class MainComponent implements OnInit {
 	/**
@@ -12,5 +12,8 @@ export class MainComponent implements OnInit {
 	 */
 	constructor() {}
 
-	ngOnInit(): void {}
+	/**
+	 * Angular lifecycle hook that initializes the component.
+	 */
+	public ngOnInit(): void {}
 }
