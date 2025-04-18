@@ -12,9 +12,10 @@ import { Forecast } from "src/app/forecast/forecast";
 import { Weekday } from "src/app/forecast/weekday";
 import { CardComponent } from "../card/card.component";
 @Component({
-	selector: "app-next-week",
-	templateUrl: "./next-week.component.html",
-	styleUrls: ["./next-week.component.css"],
+    selector: "app-next-week",
+    templateUrl: "./next-week.component.html",
+    styleUrls: ["./next-week.component.css"],
+    standalone: false
 })
 export class NextWeekComponent implements OnInit {
 	@ViewChild("first", { read: ViewContainerRef, static: true })

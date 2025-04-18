@@ -13,9 +13,10 @@ import { Weekday } from "src/app/forecast/weekday";
 import { CardComponent } from "../card/card.component";
 
 @Component({
-	selector: "app-today",
-	templateUrl: "./today.component.html",
-	styleUrls: ["./today.component.css"],
+    selector: "app-today",
+    templateUrl: "./today.component.html",
+    styleUrls: ["./today.component.css"],
+    standalone: false
 })
 export class TodayComponent implements OnInit {
 	@ViewChild("day", { read: ViewContainerRef, static: true })
