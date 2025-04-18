@@ -9,11 +9,11 @@ import { TodayComponent } from "./components/today/today.component";
  * The route navigations.
  */
 const routes: Routes = [
-	{ path: "", redirectTo: "home", component: MainComponent },
-	{ path: "home", component: MainComponent },
-	{ path: "today", component: TodayComponent },
-	{ path: "thisWeek", component: ThisWeekComponent },
-	{ path: "nextWeek", component: NextWeekComponent },
+	{ path: "", redirectTo: "home", component: MainComponent, title: "Home" },
+	{ path: "home", component: MainComponent, title: "Home" },
+	{ path: "today", component: TodayComponent, title: "Today's Weather" },
+	{ path: "thisWeek", component: ThisWeekComponent, title: "This Week's Weather" },
+	{ path: "nextWeek", component: NextWeekComponent, title: "Next Week's Weather" },
 ];
 
 @NgModule({
