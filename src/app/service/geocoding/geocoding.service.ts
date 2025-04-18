@@ -1,13 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { firstValueFrom } from "rxjs";
 
-import { Location } from "./location";
 import { NominatimEndpoint } from "./nominatim.endpoint";
+import { LocationResponse } from "./response/location-response";
 
-const FORMAT: string = "json";
-
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class GeocodingService {
+	private static readonly FORMAT = "json";
+	
 	constructor(private http: HttpClient) {}
 
 	/**
@@ -16,14 +19,15 @@ export class GeocodingService {
 	 * @param longitude the longitude
 	 * @returns the current location in "<City>, <Country>" format
 	 */
-	async getLocationByCoordinates(latitude: number, longitude: number): Promise<any> {
-		let url = NominatimEndpoint.REVERSE_SEARCH + "format=" + FORMAT + "&" + "lat=" + latitude + "&" + "lon=" + longitude;
-		return this.http
-			.get<Location>(url)
-			.toPromise()
-			.then((location) => {
-				let jsonAddressObject = JSON.parse(JSON.stringify(location.address));
-				return jsonAddressObject["city"] + ", " + jsonAddressObject["country"];
-			});
-	}
+	async getLocationByCoordinates(latitude: number, longitude: number): Promise<string> {
+        try {
+            let url = `${NominatimEndpoint.REVERSE_SEARCH}format=${GeocodingService.FORMAT}&lat=${latitude}&lon=${longitude}`;
+            const location = await firstValueFrom(this.http.get<LocationResponse>(url));
+            let jsonAddressObject = location.address;
+            return `${jsonAddressObject.city}, ${jsonAddressObject.country}`;
+        } catch (error) {
+            console.error("Error fetching location:", error);
+            return "Unknown Location";
+        }
+    }
 }
