@@ -1,39 +1,19 @@
 /**
- * The weekdays.
+ * Represents the weekdays as relative indices starting from today.
+ * 
+ * - `FIRST` represents "Today".
+ * - `SECOND` represents "Tomorrow".
+ * - `THIRD` represents the day after tomorrow.
+ * - ..
+ * 
+ * This enum is used to calculate weekdays dynamically based on the current date.
  */
 export enum Weekday {
-	/**
-	 * Represents Monday.
-	 */
 	FIRST,
-
-	/**
-	 * Represents Tuesday.
-	 */
 	SECOND,
-
-	/**
-	 * Represents Wednesday.
-	 */
 	THIRD,
-
-	/**
-	 * Represents Thursday.
-	 */
 	FOURTH,
-
-	/**
-	 * Represents Friday.
-	 */
 	FIFTH,
-
-	/**
-	 * Represents Saturday.
-	 */
 	SIXTH,
-
-	/**
-	 * Represents Sunday.
-	 */
 	SEVENTH,
 }
