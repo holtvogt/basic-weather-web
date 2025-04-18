@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 
-import { NominatimEndpoint } from "./nominatim.endpoint";
 import { Location } from "./location";
+import { NominatimEndpoint } from "./nominatim.endpoint";
 
 const FORMAT: string = "json";
 
@@ -17,8 +17,7 @@ export class GeocodingService {
 	 * @returns the current location in "<City>, <Country>" format
 	 */
 	async getLocationByCoordinates(latitude: number, longitude: number): Promise<any> {
-		let url =
-			NominatimEndpoint.REVERSE_SEARCH + "format=" + FORMAT + "&" + "lat=" + latitude + "&" + "lon=" + longitude;
+		let url = NominatimEndpoint.REVERSE_SEARCH + "format=" + FORMAT + "&" + "lat=" + latitude + "&" + "lon=" + longitude;
 		return this.http
 			.get<Location>(url)
 			.toPromise()
