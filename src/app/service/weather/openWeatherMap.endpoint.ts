@@ -12,16 +12,9 @@ export const OpenWeatherMapEndpoint = {
 		OpenWeatherMap.API_KEY,
 
 	/**
-	 * Weather forecast endpoint for the current week.
+	 * Weather forecast endpoint for a week.
 	 */
-	THIS_WEEK:
+	WEEK:
 		"https://api.openweathermap.org/data/2.5/forecast/daily?mode=json&cnt=7&units=metric&appid=" +
-		OpenWeatherMap.API_KEY,
-
-	/**
-	 * Weather forecast endpoint for the next week.
-	 */
-	NEXT_WEEK:
-		"https://api.openweathermap.org/data/2.5/forecast/daily?mode=json&cnt=14&units=metric&appid=" +
 		OpenWeatherMap.API_KEY,
 };

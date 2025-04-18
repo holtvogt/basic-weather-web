@@ -1,140 +1,113 @@
-import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { firstValueFrom } from "rxjs";
 
 import { Weather } from "../../forecast/weather";
 import { OpenWeatherMapEndpoint } from "./openWeatherMap.endpoint";
-import { Days } from "./days";
+import { DayForecast, ForecastResponse } from "./response/forecast-response";
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class WeatherService {
-	private forecastTodayURL: string;
-	private forecastThisWeekURL: string;
-	private forecastNextWeekURL: string;
+    private forecastTodayURL: string;
+    private forecastWeekURL: string;
 
-	/**
-	 * Creates the {@link WeatherService weather service}.
-	 * @param http the HTTP client
-	 */
-	constructor(private http: HttpClient) {
-		this.forecastTodayURL = OpenWeatherMapEndpoint.TODAY;
-		this.forecastThisWeekURL = OpenWeatherMapEndpoint.THIS_WEEK;
-		this.forecastNextWeekURL = OpenWeatherMapEndpoint.NEXT_WEEK;
-	}
+    /**
+     * Creates the {@link WeatherService weather service}.
+     * @param http The HTTP client.
+     */
+    constructor(private http: HttpClient) {
+        this.forecastTodayURL = OpenWeatherMapEndpoint.TODAY;
+        this.forecastWeekURL = OpenWeatherMapEndpoint.WEEK;
+    }
 
-	private getWeekday(days: number): string {
-		let date = new Date();
-		date.setDate(date.getDate() + days);
-		return date.toLocaleDateString("en-GB", { weekday: "long" });
-	}
+    /**
+     * Gets the weekday name for a given number of days from today.
+     * @param days The number of days from today.
+     * @returns The name of the weekday.
+     */
+    private getWeekday(days: number): string {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        return date.toLocaleDateString("en-GB", { weekday: "long" });
+    }
 
-	private getDate(days: number) {
-		let date = new Date();
-		date.setDate(date.getDate() + days);
-		return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-	}
+    /**
+     * Gets the date in DD/MM/YYYY format for a given number of days from today.
+     * @param days The number of days from today.
+     * @returns The formatted date string.
+     */
+    private getDate(days: number): string {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
 
-	private getWeather(days: Days, day: number): Weather {
-		// JSON formatting
-		let jsonForecastObject = JSON.parse(JSON.stringify(days.list))[day];
-		let jsonTemperatureObject = jsonForecastObject["temp"];
-		let jsonWeatherObject = jsonForecastObject["weather"];
+    /**
+     * Extracts weather information for a specific day.
+     * @param forecastResponse The `ForecastResponse` object containing weather data.
+     * @param day The index of the day to extract.
+     * @returns A `Weather` object for the specified day.
+     */
+    private getWeather(forecastResponse: ForecastResponse, day: number): Weather {
+        const forecast: DayForecast = forecastResponse.list[day];
+        const temperature = forecast.temp;
+        const weather = forecast.weather[0];
 
-		// Decimals are not necessary for degree values
-		let max = Math.floor(jsonTemperatureObject["max"]);
-		let min = Math.floor(jsonTemperatureObject["min"]);
+        return {
+            maxTemperature: Math.floor(temperature.max),
+            minTemperature: Math.floor(temperature.min),
+            weather: weather.main,
+            weekday: this.getWeekday(day),
+            date: this.getDate(day),
+        };
+    }
 
-		let forecast: Weather = {
-			maxTemperature: max,
-			minTemperature: min,
-			weather: jsonWeatherObject[0]["main"],
-			weekday: this.getWeekday(day),
-			date: this.getDate(day),
-		};
+    /**
+     * Gets today's forecast by latitude and longitude.
+     * @param latitude The latitude.
+     * @param longitude The longitude.
+     * @returns A `Weather` object containing today's weather information.
+     */
+    async getForecastTodayByCoordinates(latitude: number, longitude: number): Promise<Weather> {
+        const url = `${this.forecastTodayURL}&lat=${latitude}&lon=${longitude}`;
+        const forecastResponse = await firstValueFrom(this.http.get<ForecastResponse>(url));
+        return this.getWeather(forecastResponse, 0);
+    }
 
-		return forecast;
-	}
+    /**
+     * Gets the forecast for a given week by latitude and longitude.
+     * @param latitude The latitude.
+     * @param longitude The longitude.
+     * @param startDay The starting day index (e.g., 0 for this week, 7 for next week).
+     * @returns A list of `Weather` objects containing the weather information for the week.
+     */
+    private async getWeeklyForecast(latitude: number, longitude: number, startDay: number): Promise<Weather[]> {
+        const url = `${this.forecastWeekURL}&lat=${latitude}&lon=${longitude}`;
+        const forecastResponse = await firstValueFrom(this.http.get<ForecastResponse>(url));
 
-	/**
-	 * Gets the today's forecast by given latitude and longitude
-	 * @param latitude the latitude
-	 * @param longitude the longitude
-	 * @returns a weather object containing the current weather information for today
-	 */
-	async getForecastTodayByCoordinates(latitude: number, longitude: number): Promise<any> {
-		let url = this.forecastTodayURL + "&lat=" + latitude + "&lon=" + longitude;
-		return this.http
-			.get<Days>(url)
-			.toPromise()
-			.then((days) => {
-				return this.getWeather(days, 0);
-			});
-	}
+        // Generate the forecast for the week dynamically
+        return Array.from({ length: 7 }, (_, i) => this.getWeather(forecastResponse, startDay + i));
+    }
 
-	/**
-	 * Gets the this week's forecast by given latitude and longitude
-	 * @param latitude the latitude
-	 * @param longitude the longitude
-	 * @returns a weather list object containing the current weather information for this week
-	 */
-	async getForecastThisWeekByCoordinates(latitude: number, longitude: number): Promise<any[]> {
-		let url = this.forecastThisWeekURL + "&lat=" + latitude + "&lon=" + longitude;
-		return this.http
-			.get<Days>(url)
-			.toPromise()
-			.then((days) => {
-				let today = this.getWeather(days, 0);
-				let todayPlusOne = this.getWeather(days, 1);
-				let todayPlusTwo = this.getWeather(days, 2);
-				let todayPlusThree = this.getWeather(days, 3);
-				let todayPlusFour = this.getWeather(days, 4);
-				let todayPlusFive = this.getWeather(days, 5);
-				let todayPlusSix = this.getWeather(days, 6);
+    /**
+     * Gets this week's forecast by latitude and longitude.
+     * @param latitude The latitude.
+     * @param longitude The longitude.
+     * @returns A list of `Weather` objects containing this week's weather information.
+     */
+    async getForecastThisWeekByCoordinates(latitude: number, longitude: number): Promise<Weather[]> {
+        return this.getWeeklyForecast(latitude, longitude, 0);
+    }
 
-				let thisWeeksForecast = [
-					today,
-					todayPlusOne,
-					todayPlusTwo,
-					todayPlusThree,
-					todayPlusFour,
-					todayPlusFive,
-					todayPlusSix,
-				];
-
-				return thisWeeksForecast;
-			});
-	}
-
-	/**
-	 * Gets the next week's forecast by given latitude and longitude
-	 * @param latitude the latitude
-	 * @param longitude the longitude
-	 * @returns a weather list object containing the current weather information for next week
-	 */
-	async getForecastNextWeekByCoordinates(latitude: number, longitude: number): Promise<any[]> {
-		let url = this.forecastNextWeekURL + "&lat=" + latitude + "&lon=" + longitude;
-		return this.http
-			.get<Days>(url)
-			.toPromise()
-			.then((days) => {
-				let todayPlusSeven = this.getWeather(days, 7);
-				let todayPlusEight = this.getWeather(days, 8);
-				let todayPlusNine = this.getWeather(days, 9);
-				let todayPlusTen = this.getWeather(days, 10);
-				let todayPlusEleven = this.getWeather(days, 11);
-				let todayPlusTwelve = this.getWeather(days, 12);
-				let todayPlusThirteen = this.getWeather(days, 13);
-
-				let nextWeeksForecast = [
-					todayPlusSeven,
-					todayPlusEight,
-					todayPlusNine,
-					todayPlusTen,
-					todayPlusEleven,
-					todayPlusTwelve,
-					todayPlusThirteen,
-				];
-
-				return nextWeeksForecast;
-			});
-	}
+    /**
+     * Gets next week's forecast by latitude and longitude.
+     * @param latitude The latitude.
+     * @param longitude The longitude.
+     * @returns A list of `Weather` objects containing next week's weather information.
+     */
+    async getForecastNextWeekByCoordinates(latitude: number, longitude: number): Promise<Weather[]> {
+        return this.getWeeklyForecast(latitude, longitude, 7);
+    }
 }
