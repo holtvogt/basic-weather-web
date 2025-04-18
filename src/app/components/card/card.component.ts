@@ -1,136 +1,108 @@
 import { Component, OnInit } from "@angular/core";
 
 import { Weather } from "src/app/forecast/weather";
+import { WeatherService } from "src/app/service/weather/weather.service";
 import { Forecast } from "../../forecast/forecast";
 import { Weekday } from "../../forecast/weekday";
-import { WeatherService } from "src/app/service/weather/weather.service";
 
 @Component({
     selector: "app-card",
     templateUrl: "./card.component.html",
     styleUrls: ["./card.component.css"],
-    standalone: false
+    standalone: true,
 })
 export class CardComponent implements OnInit {
-	forecast!: Forecast;
-	weekday!: Weekday;
-	weather!: Weather;
+    forecast!: Forecast;
+    weekday!: Weekday;
+    weather!: Weather;
 
-	/**
-	 * Creates the {@link CardComponent card component}.
-	 * @param weatherService the weather service
-	 */
-	constructor(private weatherService: WeatherService) {}
+    /**
+     * Creates the {@link CardComponent card component}.
+     * @param weatherService the weather service
+     */
+    constructor(private weatherService: WeatherService) {}
 
-	ngOnInit(): void {
-		// Get current position
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				let latitude = position.coords.latitude;
-				let longitude = position.coords.longitude;
-				switch (this.forecast) {
-					/**
-					 * Today.
-					 */
-					case Forecast.TODAY:
-						this.weatherService
-							.getForecastTodayByCoordinates(latitude, longitude)
-							.then((weather) => (this.weather = weather));
-						break;
+    /**
+     * Angular lifecycle hook that initializes the component.
+     */
+    public ngOnInit(): void {
+        // Get current position
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
 
-					/**
-					 * This week.
-					 */
-					case Forecast.THIS_WEEK:
-						switch (this.weekday) {
-							case Weekday.FIRST:
-								this.weatherService
-									.getForecastThisWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[0]));
-								break;
-							case Weekday.SECOND:
-								this.weatherService
-									.getForecastThisWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[1]));
-								break;
-							case Weekday.THIRD:
-								this.weatherService
-									.getForecastThisWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[2]));
-								break;
-							case Weekday.FOURTH:
-								this.weatherService
-									.getForecastThisWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[3]));
-								break;
-							case Weekday.FIFTH:
-								this.weatherService
-									.getForecastThisWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[4]));
-								break;
-							case Weekday.SIXTH:
-								this.weatherService
-									.getForecastThisWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[5]));
-								break;
-							case Weekday.SEVENTH:
-								this.weatherService
-									.getForecastThisWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[6]));
-								break;
-							default:
-								break;
-						}
-						break;
+                this.fetchWeatherData(latitude, longitude);
+            });
+        }
+    }
 
-					/**
-					 * Next week.
-					 */
-					case Forecast.NEXT_WEEK:
-						switch (this.weekday) {
-							case Weekday.FIRST:
-								this.weatherService
-									.getForecastNextWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[0]));
-								break;
-							case Weekday.SECOND:
-								this.weatherService
-									.getForecastNextWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[1]));
-								break;
-							case Weekday.THIRD:
-								this.weatherService
-									.getForecastNextWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[2]));
-								break;
-							case Weekday.FOURTH:
-								this.weatherService
-									.getForecastNextWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[3]));
-								break;
-							case Weekday.FIFTH:
-								this.weatherService
-									.getForecastNextWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[4]));
-								break;
-							case Weekday.SIXTH:
-								this.weatherService
-									.getForecastNextWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[5]));
-								break;
-							case Weekday.SEVENTH:
-								this.weatherService
-									.getForecastNextWeekByCoordinates(latitude, longitude)
-									.then((weather) => (this.weather = weather[6]));
-								break;
-							default:
-								break;
-						}
-						break;
-					default:
-						break;
-				}
-			});
-		}
-	}
+    /**
+     * Fetches weather data based on the forecast and weekday.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     */
+    private fetchWeatherData(latitude: number, longitude: number): void {
+        switch (this.forecast) {
+            case Forecast.TODAY:
+                this.weatherService
+                    .getForecastTodayByCoordinates(latitude, longitude)
+                    .then((weather) => (this.weather = weather));
+                break;
+
+            case Forecast.THIS_WEEK:
+                this.fetchWeeklyWeather(
+                    () => this.weatherService.getForecastThisWeekByCoordinates(latitude, longitude)
+                );
+                break;
+
+            case Forecast.NEXT_WEEK:
+                this.fetchWeeklyWeather(
+                    () => this.weatherService.getForecastNextWeekByCoordinates(latitude, longitude)
+                );
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Fetches weather data for a specific day of the week.
+     * @param fetchWeather A function to fetch the weekly weather data.
+     */
+    private fetchWeeklyWeather(fetchWeather: () => Promise<Weather[]>): void {
+        fetchWeather().then((weather) => {
+            const dayIndex = this.getDayIndex(this.weekday);
+            if (dayIndex !== null) {
+                this.weather = weather[dayIndex];
+            }
+        });
+    }
+
+    /**
+     * Maps the weekday to its corresponding index.
+     * @param weekday The weekday.
+     * @returns The index of the weekday or null if invalid.
+     */
+    private getDayIndex(weekday: Weekday): number | null {
+        switch (weekday) {
+            case Weekday.FIRST:
+                return 0;
+            case Weekday.SECOND:
+                return 1;
+            case Weekday.THIRD:
+                return 2;
+            case Weekday.FOURTH:
+                return 3;
+            case Weekday.FIFTH:
+                return 4;
+            case Weekday.SIXTH:
+                return 5;
+            case Weekday.SEVENTH:
+                return 6;
+            default:
+                return null;
+        }
+    }
 }
