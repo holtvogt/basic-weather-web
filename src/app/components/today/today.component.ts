@@ -1,11 +1,9 @@
 import {
-	Component,
-	ComponentFactory,
-	ComponentFactoryResolver,
-	ComponentRef,
-	OnInit,
-	ViewChild,
-	ViewContainerRef,
+    Component,
+    ComponentRef,
+    OnInit,
+    ViewChild,
+    ViewContainerRef,
 } from "@angular/core";
 
 import { Forecast } from "src/app/forecast/forecast";
@@ -16,46 +14,43 @@ import { CardComponent } from "../card/card.component";
     selector: "app-today",
     templateUrl: "./today.component.html",
     styleUrls: ["./today.component.css"],
-    standalone: false
+    standalone: true,
 })
 export class TodayComponent implements OnInit {
-	@ViewChild("day", { read: ViewContainerRef, static: true })
-	private viewContainerReferenceDay!: ViewContainerRef;
-
-	private componentFactory: ComponentFactory<CardComponent>;
-	private weatherCard: Array<ComponentRef<CardComponent>>;
+    @ViewChild("day", { read: ViewContainerRef, static: true })
+    private viewContainerReferenceDay!: ViewContainerRef;
+    private weatherCard: ComponentRef<CardComponent> | null = null;
 
 	/**
-	 * Creates the {@link TodayComponent today component}.
-	 * @param componentFactoryResolver the component factory resolver
-	 */
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
-		this.componentFactory = this.componentFactoryResolver.resolveComponentFactory<CardComponent>(CardComponent);
-		this.weatherCard = [];
-	}
+     * Angular lifecycle hook that initializes the component.
+     */
+    public ngOnInit(): void {
+        this.showWeatherToday();
+    }
 
-	private removeCards() {
-		this.weatherCard.forEach((component) => component.destroy());
-	}
+    /**
+     * Removes the dynamically created weather card.
+     */
+    private removeCard(): void {
+        if (this.weatherCard) {
+            this.weatherCard.destroy();
+            this.weatherCard = null;
+        }
+    }
 
-	private showWeatherToday() {
-		// Main card
-		let weatherCardReference = this.viewContainerReferenceDay.createComponent<CardComponent>(this.componentFactory);
+    /**
+     * Dynamically creates a weather card for today.
+     */
+    private showWeatherToday(): void {
+        // Remove the existing card
+        this.removeCard();
 
-		// Remove other weather cards
-		this.removeCards();
+        // Create and configure the weather card
+        const card = this.viewContainerReferenceDay.createComponent(CardComponent);
+        card.instance.forecast = Forecast.TODAY;
+        card.instance.weekday = Weekday.FIRST;
 
-		// Instantiate weather card component
-		let weatherCard = weatherCardReference.instance;
-
-		// Assignments
-		weatherCard.forecast = Forecast.TODAY;
-		weatherCard.weekday = Weekday.FIRST;
-
-		this.weatherCard.push(weatherCardReference);
-	}
-
-	ngOnInit(): void {
-		this.showWeatherToday();
-	}
+        // Store the reference to the created card
+        this.weatherCard = card;
+    }
 }
