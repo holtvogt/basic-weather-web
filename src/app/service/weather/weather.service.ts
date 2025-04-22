@@ -61,7 +61,7 @@ export class WeatherService {
      * @returns A list of `Weather` objects containing the weather information for the specified range.
      */
     private async getForecast(latitude: number, longitude: number, startDay: number, endDay: number): Promise<Weather[]> {
-        const daysToFetch = Math.min(endDay - startDay, WeatherService.MAX_FETCHABLE_DAYS);
+        const daysToFetch = Math.min(endDay, WeatherService.MAX_FETCHABLE_DAYS);
         const forecastResponse = await this.fetchForecast(latitude, longitude, daysToFetch);
 
         return this.getWeather(forecastResponse, startDay, endDay);
