@@ -2,8 +2,6 @@
 
 A sleek and modern weather web application that provides accurate weather forecasts using the **[Nominatim Geocoding API](https://nominatim.org/release-docs/develop/api/Overview/)** and **[OpenWeatherMap API](https://openweathermap.org/api)**. This project was developed as part of the **[Mobile Computing and Internet of Things](https://pcs.tm.kit.edu/962_984.php)** course at Karlsruhe Institute of Technology.
 
----
-
 ## Features
 
 - 🌍 **Geocoding**: Automatically detects your location using the Nominatim API.
@@ -11,15 +9,11 @@ A sleek and modern weather web application that provides accurate weather foreca
 - 📅 **Weekly Forecast**: Provides a detailed weather forecast for the current and upcoming weeks.
 - 🔄 **Responsive Design**: Fully optimized for desktop and mobile devices.
 
----
-
 ## Preview
 
 ### Desktop
 
 <img src="./resources/images/desktop_screenshot.png" alt="Desktop Screenshot" width="800">
-
----
 
 ## Installation and Setup
 
